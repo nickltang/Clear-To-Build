@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import FileUpload from './FileUpload'
 import Table from './Table'
+import Button from './Button'
 
 const Form = () => {
     const [topLevelAssy, setTopLevelAssy] = useState("")
@@ -8,49 +9,41 @@ const Form = () => {
     const [productID, setProductID] = useState("Upload file to display product ID")
     const [orderList, setOrderList] = useState([])
     const [tableAvailable, setTableAvailable] = useState(false)
+    const [warning, setWarning] = useState('')
 
-    // TO DO: New value is one character behind
+
     const handleTopLevelAssyInputChange = (event) => {
         setTopLevelAssy(event.target.value)
-        console.log('New topLevelAssy: ' + topLevelAssy)
     }
 
-    // TO DO: New value is one character behind
+
     const handleDesiredQtyInputChange = (event) => {
         setDesiredQty(event.target.value)
-        console.log('New desiredQty: ' + desiredQty)
     }
 
 
+    // Passed as a prop into File Upload
     // Updates product ID after calling the Import File endpoint 
-        // TO DO: setProductID doesn't actually set the productID to data
     const importFileCallback = (data) => {
-        console.log('IF callback productID: ', data)
         setProductID(data)
-        console.log('IF callback productID after: ', productID)
     }
 
 
+    // Passed as a prop into File Upload
     // Updates order list after calling the Run Order List endpoint 
-        // TO DO: setOrderList doesn't actually set the orderList to data
     const runOrderListCallback = (data) => {
-        console.log('ROL callback order list: ', data)
         setOrderList(data)
-        console.log('ROL order list after: ', orderList)
     }
 
 
-    // On clicking Clear To Build, filter the order list for descendants of top level assembly and display table
-    const onClick = (event) => {
-        const filteredList = orderList.filter((list) => {
-            console.log('Filter by Top Level Assy: ', topLevelAssy)
-            return list.GrandParent_BOM_pn === topLevelAssy
-        })
-
-        setOrderList(filteredList)
-        console.log('CTB order list: ', orderList)
-
-        setTableAvailable(true)
+    // Passed as a prop into Button
+    // Updates order list and 
+    const buttonCallback = (list) => {
+        setOrderList(list)
+        if(topLevelAssy !== '' && desiredQty !== '' && productID !== "Upload file to display product ID"){
+            setTableAvailable(true)
+        } else
+            setWarning('Please complete the form before submitting.')
     }
     
 
@@ -79,10 +72,13 @@ const Form = () => {
                     value={desiredQty}
                     name='desiredQty'/>
             </form>
+            <p>Product ID: {productID}, Top Level Assy: {topLevelAssy}, DesiredQty: {desiredQty}, OrderList: {orderList}</p>
 
-            <button onClick={onClick}>Clear To Build</button>
+            <p id="warning">{warning}</p>
 
-            {tableAvailable ? <Table orderList={orderList} /> : ''}
+            <Button productID={productID} buttonCallback={buttonCallback} topLevelAssy={topLevelAssy}>Clear To Build</Button>
+
+            {tableAvailable ? <Table orderList={orderList} desiredQty={desiredQty} topLevelAssy={topLevelAssy}/> : ''}
         </div>
     )
 }

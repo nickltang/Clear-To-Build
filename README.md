@@ -17,12 +17,13 @@ npm start
   - [ ] Implement form validation
   - [ ] Implement file type validation
   - [ ] Implement Top Level Assembly dropdown
-  - [ ] Text input states are one character behind (!)
-  - [ ] Callback functions don't set order list and product ID lists (!)
-- [ ] FileUpload.js
-  - [ ] Run Order List returns an empty reponse (!)
-- [ ] Table.js
-  - [ ] Disable table popup before BOM file is uploaded
+  - [x] Text input states are one character behind
+  - [x] Callback functions don't set order list and product ID lists
+- [x] FileUpload.js
+  - [x] Run Order List returns an empty reponse 
+- [x] Table.js
+  - [x] Disable table popup before BOM file is uploaded
+  - [] Table rendering shows error (!)
 
 (!): Tasks I'm stuck on
 

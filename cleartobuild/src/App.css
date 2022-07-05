@@ -62,3 +62,6 @@ th, td {
   text-align: left;
 }
 
+#warning {
+  color: red
+}

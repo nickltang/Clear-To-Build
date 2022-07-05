@@ -1,11 +1,11 @@
 const Table = ({orderList, topLevelAssy, desiredQty}) => {
     const tableDisplay = orderList.map(
-        (obj) => {
+        (entry) => {
             return (
                 <tr>
-                    <td>{obj.Child_pn}</td>
-                    <td>{obj.RequiredQty}</td>
-                    <td>{parseInt(obj.RequiredQty) * desiredQty}</td>
+                    <td>{entry["Child_pn"]}</td>
+                    <td>{entry["RequiredQty"]}</td>
+                    <td>{parseInt(entry["RequiredQty"]) * desiredQty}</td>
                 </tr>
             )
         }
@@ -13,7 +13,7 @@ const Table = ({orderList, topLevelAssy, desiredQty}) => {
 
     return (
         <div>
-            <h3>Product {topLevelAssy}, Quantity {desiredQty}</h3>
+            <h3>Product {{topLevelAssy}.topLevelAssy}, Quantity {{desiredQty}.desiredQty}</h3>
             <table>
                 <thead>
                     <tr>
