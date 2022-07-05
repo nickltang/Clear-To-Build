@@ -23,7 +23,7 @@ npm start
   - [x] Run Order List returns an empty reponse 
 - [x] Table.js
   - [x] Disable table popup before BOM file is uploaded
-  - [] Table rendering shows error (!)
+  - [ ] Table rendering shows error (!)
 
 (!): Tasks I'm stuck on
 
