@@ -72,7 +72,7 @@ const Form = () => {
                     value={desiredQty}
                     name='desiredQty'/>
             </form>
-            <p>Product ID: {productID}, Top Level Assy: {topLevelAssy}, DesiredQty: {desiredQty}, OrderList: {orderList}</p>
+            <p>Product ID: {productID}<br/>Top Level Assy: {topLevelAssy}<br/>DesiredQty: {desiredQty}</p>
 
             <p id="warning">{warning}</p>
 
