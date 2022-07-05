@@ -8,6 +8,7 @@ npm install
 ```
 ### Run React Dev Server
 ```
+cd cleartobuild
 npm start
 ```
 
