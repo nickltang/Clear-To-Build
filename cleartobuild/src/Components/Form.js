@@ -1,84 +1,91 @@
 import { useState } from 'react'
 import FileUpload from './FileUpload'
 import Table from './Table'
-import Button from './Button'
+import Button from './CTBbutton'
+import SaveIDbutton from './SaveIDbutton'
+import SelectGrandparents from './SelectGrandparents'
 
 const Form = () => {
-    const [topLevelAssy, setTopLevelAssy] = useState("")
-    const [desiredQty, setDesiredQty] = useState("")
-    const [productID, setProductID] = useState("Upload file to display product ID")
+    const [productID, setProductID] = useState('')
+    const [topLevelAssy, setTopLevelAssy] = useState('')
+    const [desiredQty, setDesiredQty] = useState('')
     const [orderList, setOrderList] = useState([])
+    const [grandparents, setGrandparents] = useState([])
     const [tableAvailable, setTableAvailable] = useState(false)
     const [warning, setWarning] = useState('')
 
 
-    const handleTopLevelAssyInputChange = (event) => {
-        setTopLevelAssy(event.target.value)
-    }
-
-
-    const handleDesiredQtyInputChange = (event) => {
-        setDesiredQty(event.target.value)
-    }
-
-
-    // Passed as a prop into File Upload
-    // Updates product ID after calling the Import File endpoint 
-    const importFileCallback = (data) => {
-        setProductID(data)
-    }
-
-
-    // Passed as a prop into File Upload
-    // Updates order list after calling the Run Order List endpoint 
-    const runOrderListCallback = (data) => {
-        setOrderList(data)
-    }
-
-
-    // Passed as a prop into Button
-    // Updates order list and 
+    // Validates productID, topLevelAssy, desiredQty is entered when CTB button is pressed, then saves orderList and enables table
     const buttonCallback = (list) => {
-        setOrderList(list)
-        if(topLevelAssy !== '' && desiredQty !== '' && productID !== "Upload file to display product ID"){
+        if(topLevelAssy !== '' && desiredQty !== '' && productID !== ''){
+            setOrderList(list)
             setTableAvailable(true)
         } else
             setWarning('Please complete the form before submitting.')
     }
     
-
     return (
-        <div className="container">
+        <div className='container'>
              <form>
                 <label>Upload your BOM</label>
                 <FileUpload 
-                    importFileCallback={importFileCallback} 
-                    runOrderListCallback={runOrderListCallback} 
+                    setProductID={(newID) => setProductID(newID)} 
                     productID={productID}/>
 
-                <label>Product ID</label>
-                <label id="pid-label">{productID}</label>
+                <label>Enter Product ID</label>
+                <input
+                    onChange={(event) => setProductID(event.target.value)}
+                    value={productID}
+                    name='productID'/>
+                <SaveIDbutton 
+                    productID={productID} 
+                    setOrderList={(list) => setOrderList(list)}
+                    setGrandparentPN={(grandparents) => setGrandparents(grandparents)}
+                    setTopLevelAssy={(grandparentPN) => setTopLevelAssy(grandparentPN)}/>
 
                 <label>Top Level Assembly</label>
-                <input
-                    onChange={handleTopLevelAssyInputChange}
+                <select
+                    onChange={(event) => setTopLevelAssy(event.target.value)}
                     value={topLevelAssy}
-                    name='topLevelAssy'
-                    />
+                    name='topLevelAssy'>
+                    {grandparents.map(grandparent => {
+                        return(<option key={grandparent} value={grandparent}>{grandparent}</option>)
+                    })}
+                </select>
+                
             
                 <label>Desired Quantity</label>
                 <input
-                    onChange={handleDesiredQtyInputChange}
+                    onChange={(event) => setDesiredQty(event.target.value)}
                     value={desiredQty}
                     name='desiredQty'/>
             </form>
-            <p>Product ID: {productID}<br/>Top Level Assy: {topLevelAssy}<br/>DesiredQty: {desiredQty}</p>
 
-            <p id="warning">{warning}</p>
+            <p>Product ID: {productID}<br/>
+                Top Level Assy: {topLevelAssy}<br/>
+                DesiredQty: {desiredQty}<br/>
+                Grandparents: {grandparents}
+            </p>
 
-            <Button productID={productID} buttonCallback={buttonCallback} topLevelAssy={topLevelAssy}>Clear To Build</Button>
+            <p id='warning'>{warning}</p>
 
-            {tableAvailable ? <Table orderList={orderList} desiredQty={desiredQty} topLevelAssy={topLevelAssy}/> : ''}
+            <Button 
+                productID={productID}
+                topLevelAssy={topLevelAssy}
+                desiredQty={desiredQty}
+                orderList={orderList}
+                setWarning={setWarning}
+                setOrderList={setOrderList}
+                setTableAvailable={setTableAvailable}>
+                Clear To Build
+            </Button>
+
+            {tableAvailable ?
+                <Table 
+                    orderList={orderList} 
+                    desiredQty={desiredQty} 
+                    topLevelAssy={topLevelAssy}/> 
+                : ''}
         </div>
     )
 }
